@@ -1,0 +1,23 @@
+{
+  "name": "douban-trailer",
+  "version": "1.0.0",
+  "description": "node.js app",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Novak12/douban-trailer.git"
+  },
+  "author": "Novak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Novak12/douban-trailer/issues"
+  },
+  "homepage": "https://github.com/Novak12/douban-trailer#readme",
+  "dependencies": {
+    "koa": "^2.5.2"
+  }
+}
