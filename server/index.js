@@ -1,6 +1,5 @@
 const koa = require('koa');
 const app = new koa();
-
 const { normal } = require('./tpl')
 
 app.use((ctx, next) => {
