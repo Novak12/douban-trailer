@@ -15,8 +15,7 @@ module.exports = `
              <h1>Hi Luke</h1>
              <p>This is Novak</p>
            </div>
-         </div>
-         <div class="col-md-4">
+           <div class="col-md-4">
            <p>test static HTML page</p>
          </div>
        </div>
