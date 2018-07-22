@@ -1,11 +1,14 @@
 const koa = require('koa');
 const app = new koa();
-const { htmlTpl, ejsTpl } = require('./tpl')
-const ejs = require('ejs');
+const views = require('koa-views');
+const { resolve } = require('path');
 
-app.use((ctx, next) => {
-    ctx.type = 'text/html; charset=utf-8'
-    ctx.body = ejs.render(ejsTpl, {
+app.use(views(resolve(__dirname, './views'), {
+    extension: 'pug'
+}))
+
+app.use(async (ctx, next) => {
+    await ctx.render('index', {
         you: 'Luke',
         me: 'Novak'
     });
