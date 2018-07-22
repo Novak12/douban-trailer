@@ -3,10 +3,26 @@ extend ./layouts/default
 block title 
   title Koa Douban Homepage
 block content
-    .container
-      .row  
-        .col-md-8
-          h1 Hi #{you}
-          p This is #{me}
-        .clo-md-4
-          h3 测试动态 Pug 模板引擎
+    include ./includes/header
+
+    .container-fluid
+      .sidebar
+      .content
+        .row
+          .col-md-6
+            .card
+               img.card-img-top(src="G:/video/Photo/桌面图片/19.jpg", 
+               data-vedio="G:/video/Film/触不到的恋人.mp4")
+               .card-body
+                h4.card-title 这是电影标题
+                p.card-desc 这是电影描述
+               .card-footer
+               small.text-muted 1天前更新
+          .col-md-6
+          img.card-img-top(src="G:/video/Photo/桌面图片/17.jpg", 
+               data-vedio="G:/video/Film/触不到的恋人.mp4")
+               .card-body
+                h4.card-title 这是电影标题
+                p.card-desc 这是电影描述
+               .card-footer
+               small.text-muted 1天前更新
