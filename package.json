@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Novak12/douban-trailer#readme",
   "dependencies": {
+    "ejs": "^2.6.1",
     "koa": "^2.5.2"
   }
 }
