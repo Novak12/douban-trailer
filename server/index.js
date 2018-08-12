@@ -10,9 +10,8 @@ const mongoose = require('mongoose');
 
     initSchemas();
 
-    const Movie = mongoose.model('Movie');
-    const movies = await Movie.find({});
-    console.log(movies);
+    //require('./tasks/movie');
+    require('./tasks/api');
 
 })();
 
@@ -21,9 +20,9 @@ app.use(views(resolve(__dirname, './views'), {
 }))
 
 app.use(async (ctx, next) => {
-    await ctx.render('index', {
+    /* await ctx.render('index', {
         you: 'Luke',
         me: 'Novak'
-    });
+    }); */
 })
 app.listen(3000);
