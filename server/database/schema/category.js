@@ -7,10 +7,10 @@ const categorySchema = new Schema({
         unique: true,
         type: String
     },
-    movies: {
+    movies: [{
         type: ObjectId,
         ref: 'Movie'
-    },
+    }],
     meta: {
         updatedAt: {
             type: Date,
