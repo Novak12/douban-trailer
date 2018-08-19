@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 const base = 'https://movie.douban.com/subject/';
-const doubanId = '26739551';
+const doubanId = '26586766';
 const videoBase = 'https://movie.douban.com/trailer/219491/';
 
 const sleep = time => new Promise(resolve => {
@@ -20,17 +20,14 @@ const sleep = time => new Promise(resolve => {
         waitUntil: 'networkidle2'
     })
 
-    await sleep(3000);
-
-    await page.waitForSelector('.more');
-
+    await sleep(1000);
     const result = await page.evaluate(() => {
         var $ = window.$;
         var it = $('.related-pic-video');
         if (it && it.length > 0) {
             var link = it.attr('href');
-            var cover = it.find('img').attr('src');
-
+            var cover = it.attr('style').split('(')[1];//跟原课程不太一样
+            cover = cover.split('?')[0];
             return {
                 link,
                 cover
@@ -39,6 +36,7 @@ const sleep = time => new Promise(resolve => {
         return {}
     })
     let vedio
+
     if (result.link) {
         await page.goto(result.link, {
             waitUntil: 'networkidle2'
@@ -59,7 +57,6 @@ const sleep = time => new Promise(resolve => {
         doubanId,
         cover: result.cover
     };
-
 
     browser.close();
     process.send(data);
