@@ -9,10 +9,11 @@ async function fetchMovie(item) {
     let body;
     try {
         body = JSON.parse(res);
+        //console.log(body);
     } catch (err) {
         console.log(err);
     }
-    return res;
+    return body;
 }
 
 (async () => {
@@ -24,7 +25,7 @@ async function fetchMovie(item) {
             { summary: '' }
         ]
     })
-    for (let i = 0; i < [movies[0]].length; i++) {
+    for (let i = 0; i < movies.length; i++) {
         let movie = movies[i];
         console.log(movie);
         let movieData = await fetchMovie(movie);
@@ -33,7 +34,7 @@ async function fetchMovie(item) {
             let tags = movieData.tags || [];
             movie.tags = movie.tags || [];
             movie.summary = movieData.summary || '';
-            movie.title = movieData.title || movie.alt_title || '';
+            movie.title = movie.alt_title || movieData.title || '';
             movie.rawTitle = movieData.title || '';
 
             if (movieData.attrs) {
@@ -41,10 +42,10 @@ async function fetchMovie(item) {
                 movie.year = movieData.attrs.year[0] || 2500;
                 for (let i = 0; i < movie.movieTypes.length; i++) {
                     let element = movie.movieTypes[i];
-                    let cat = await Category.find({
+                    let cat = await Category.findOne({
                         name: element
                     });
-                    if (cat) {
+                    if (!cat) {
                         cat = new Category({
                             name: element,
                             movies: [movie._id]
@@ -59,7 +60,7 @@ async function fetchMovie(item) {
                         movie.category.push(cat._id);
                     } else {
                         if (movie.category.indexOf(cat._id) === -1) {
-                            movie.category.pubdate(cat._id);
+                            movie.category.push(cat._id);
                         }
                     }
                 }
@@ -77,7 +78,7 @@ async function fetchMovie(item) {
                         }
 
                         pubdates.push({
-                            date: new date(date),
+                            date: new Date(date),
                             country: country
                         })
                     }
