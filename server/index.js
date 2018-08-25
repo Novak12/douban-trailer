@@ -3,30 +3,48 @@ const app = new koa();
 const { resolve } = require('path');
 const { connect, initSchemas, initAdmin } = require('./database/init');
 const R = require('ramda');
-const MIDDLEWARES = ['router']
+
+const Bundler = require('parcel-bundler');
+const views = require('koa-views');
+const serve = require('koa-static');
 
 
-    ; (async () => {
-        await connect();
+const MIDDLEWARES = ['router'];
 
-        initSchemas();
-        initAdmin();
-        //require('./tasks/movie');
-        //require('./tasks/api');
-        const useMiddleWares = (app) => {
-            R.map(
-                R.compose(
-                    R.forEachObjIndexed(
-                        initWith => initWith(app)
-                    ),
-                    require,
-                    name => resolve(__dirname, `./middlewares/${name}`)
-                ))(MIDDLEWARES)
-        }
+const useMiddleWares = (app) => {
+    R.map(
+        R.compose(
+            R.forEachObjIndexed(
+                initWith => initWith(app)
+            ),
+            require,
+            name => resolve(__dirname, `./middlewares/${name}`)
+        ))(MIDDLEWARES)
+}
+const r = path => resolve(__dirname, path);
 
-        await useMiddleWares(app);
-    })();
+const bundler = new Bundler(r('../src/index.html'), {
+    publicUrl: '/',
+    watch: true
+});
+
+; (async () => {
+    await connect();
+
+    initSchemas();
+    initAdmin();
+    //require('./tasks/movie');
+    //require('./tasks/api');   
+    await bundler.bundle();
+    app.use(serve(r('../dist')));
+    app.use(views(r('../dist')), {
+        extension: 'html'
+    });
+
+    await useMiddleWares(app);
+
+    app.listen(4000);
+})();
 
 
 
-app.listen(3000);

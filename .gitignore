@@ -4,6 +4,8 @@ npm-debug.log
 
 dist
 
+.cache
+
 .DS_Store
 
 build

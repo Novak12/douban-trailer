@@ -4,7 +4,7 @@
   "description": "node.js app",
   "main": "server/index.js",
   "scripts": {
-    "start": "node server/index.js",
+    "start": "rimraf dist && rimraf .cache && set NODE_ENV=development && nodemon ./start.js",
     "build": "rimraf dist && parcel build src/index.html --no-cache -d dist --public-url /",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Novak12/douban-trailer#readme",
   "dependencies": {
+    "antd": "^3.0.0",
     "autoprefixer": "^9.1.3",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -39,13 +40,15 @@
     "lodash": "^4.17.10",
     "mongoose": "^5.2.7",
     "node-sass": "^4.9.3",
+    "nodemon": "^1.18.3",
     "npm": "^6.2.0",
     "parcel-bundler": "^1.9.7",
     "pug": "^2.0.3",
     "puppeteer": "^1.7.0",
     "ramda": "^0.25.0",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "react-router-dom": "^4.2.2",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
     "rimraf": "^2.6.2"
