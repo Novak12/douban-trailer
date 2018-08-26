@@ -1,64 +1,77 @@
-const puppeteer = require('puppeteer');
-const base = 'https://movie.douban.com/subject/';
-const doubanId = '26586766';
-const videoBase = 'https://movie.douban.com/trailer/219491/';
+const puppeteer = require('puppeteer')
+
+const base = `https://movie.douban.com/subject/`
 
 const sleep = time => new Promise(resolve => {
-    setTimeout(resolve, time);
-});
+    setTimeout(resolve, time)
+})
 
-(async () => {
-    console.log('Start visit the target page');
+process.on('message', async movies => {
+    console.log('Start visit the target page')
 
     const browser = await puppeteer.launch({
         args: ['--no-sandbox'],
         dumpio: false
     })
 
-    const page = await browser.newPage();
-    await page.goto(base + doubanId, {
-        waitUntil: 'networkidle2'
-    })
+    const page = await browser.newPage()
 
-    await sleep(1000);
-    const result = await page.evaluate(() => {
-        var $ = window.$;
-        var it = $('.related-pic-video');
-        if (it && it.length > 0) {
-            var link = it.attr('href');
-            var cover = it.attr('style').split('(')[1];//跟原课程不太一样
-            cover = cover.split('?')[0];
-            return {
-                link,
-                cover
-            }
-        }
-        return {}
-    })
-    let vedio
+    for (let i = 0; i < movies.length; i++) {
+        let doubanId = movies[i].doubanId
 
-    if (result.link) {
-        await page.goto(result.link, {
+        await page.goto(base + doubanId, {
             waitUntil: 'networkidle2'
         })
-        await sleep(2000);
 
-        vedio = await page.evaluate(() => {
-            var $ = window.$;
-            var it = $('source');
+        await sleep(1000)
+
+        const result = await page.evaluate(() => {
+            var $ = window.$
+            var it = $('.related-pic-video')
+
             if (it && it.length > 0) {
-                return it.attr('src');
-            }
-            return '';
-        })
-    }
-    const data = {
-        vedio,
-        doubanId,
-        cover: result.cover
-    };
+                var link = it.attr('href')
+                var cover = it.attr('style').split('(')[1];//跟原课程不太一样
+                cover = cover.split('?')[0];
 
-    browser.close();
-    process.send(data);
-    process.exit(0);
-})()
+                return {
+                    link,
+                    cover
+                }
+            }
+
+            return {}
+        })
+
+        let video
+
+        if (result.link) {
+            await page.goto(result.link, {
+                waitUntil: 'networkidle2'
+            })
+            await sleep(2000)
+
+            video = await page.evaluate(() => {
+                var $ = window.$
+                var it = $('source')
+
+                if (it && it.length > 0) {
+                    return it.attr('src')
+                }
+
+                return ''
+            })
+        }
+
+        const data = {
+            video,
+            doubanId,
+            cover: result.cover
+        }
+
+        process.send(data)
+    }
+
+    browser.close()
+    process.exit(0)
+})

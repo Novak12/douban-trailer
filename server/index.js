@@ -35,13 +35,15 @@ const bundler = new Bundler(r('../src/index.html'), {
     initAdmin();
     //require('./tasks/movie');
     //require('./tasks/api');   
-    await bundler.bundle();
+    //require('./tasks/trailer'); 
+    require('./tasks/qiniu'); 
+    /* await bundler.bundle();
     app.use(serve(r('../dist')));
     app.use(views(r('../dist')), {
         extension: 'html'
-    });
+    }); */
 
-    await useMiddleWares(app);
+    //await useMiddleWares(app);
 
     app.listen(4000);
 })();
